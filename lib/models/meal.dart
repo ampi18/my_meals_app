@@ -6,7 +6,7 @@ class Meal {
   String? description;
   MealTime mealTime;
   int rating;
-  Origin method;
+  Origin origin;
   DateTime date;
 
   Meal({
@@ -14,7 +14,7 @@ class Meal {
     this.description,
     required this.mealTime,
     required this.rating,
-    required this.method,
+    required this.origin,
     required this.date,
   });
 }

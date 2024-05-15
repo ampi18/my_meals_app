@@ -42,7 +42,7 @@ class MealListTile extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(meal.name),
-                        Text(meal.method.name),
+                        Text(meal.origin.name),
                       ],
                     ),
                   ),

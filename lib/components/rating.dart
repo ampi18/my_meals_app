@@ -7,6 +7,7 @@ class Rating extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
       children: [
         for (var i = 0; i < rating; i++)
           const Icon(Icons.star, color: Colors.amber),
