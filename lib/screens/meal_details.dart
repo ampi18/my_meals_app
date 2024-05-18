@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:my_meals_app/components/mealtimes_row.dart';
 import 'package:my_meals_app/components/origin_tag.dart';
 import 'package:my_meals_app/models/meal.dart';
 import 'package:my_meals_app/components/rating.dart';
@@ -22,12 +21,12 @@ class MealDetails extends StatelessWidget {
           children: [
             Rating(rating: meal.rating),
             const SizedBox(height: 10),
-            MealTimesRow(mealTime: meal.mealTime),
+            Text(meal.mealTime.name),
             const SizedBox(height: 10),
             OriginTag(origin: meal.origin),
             Text(DateFormat('dd.MM.yyyy').format(meal.date)),
             Text(
-              meal.description ?? '',
+              meal.comment ?? '',
               textAlign: TextAlign.center,
             ),
           ],

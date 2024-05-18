@@ -33,22 +33,29 @@ class MealListTile extends StatelessWidget {
               children: [
                 CircleAvatar(
                   radius: 30,
-                  backgroundImage:
-                      AssetImage('assets/images/${meal.mealTime.name}.jpeg'),
+                  backgroundColor: meal.origin.color,
+                  child: Icon(meal.origin.icon),
                 ),
-                Expanded(
-                  child: Center(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(meal.name),
-                        Text(meal.origin.name),
-                      ],
-                    ),
+                const SizedBox(width: 10),
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        meal.name,
+                        style: const TextStyle(
+                            fontSize: 20, fontWeight: FontWeight.bold),
+                      ),
+                      Text(meal.mealTime.name),
+                    ],
                   ),
                 ),
+                const Spacer(),
                 Column(
                   mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
                     Rating(rating: meal.rating),
                     Text(DateFormat('dd.MM.yyyy').format(meal.date)),

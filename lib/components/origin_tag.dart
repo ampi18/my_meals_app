@@ -10,13 +10,7 @@ class OriginTag extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        if (origin == Origin.homecooked)
-          const Icon(Icons.home, color: Colors.black), //Icons.skillet
-        if (origin == Origin.delivery)
-          const Icon(Icons.delivery_dining, color: Colors.black),
-        if (origin == Origin.restaurant)
-          const Icon(Icons.restaurant, color: Colors.black),
-        const SizedBox(width: 5),
+        Icon(origin.icon, color: origin.color),
         Text(origin.name.toUpperCase()),
       ],
     );
