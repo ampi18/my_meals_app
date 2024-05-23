@@ -5,6 +5,7 @@ import 'package:my_meals_app/models/meal_time.dart';
 import 'package:my_meals_app/models/origin.dart';
 import 'package:my_meals_app/screens/meal_details.dart';
 import 'package:my_meals_app/screens/meal_edit.dart';
+import 'package:my_meals_app/screens/settings.dart';
 
 List<Meal> mymeals = [
   Meal(
@@ -191,10 +192,16 @@ class MainApp extends StatelessWidget {
         ),
         floatingActionButton: Builder(builder: (context) {
           return FloatingActionButton(
+            // onPressed: () {
+            //   Navigator.push(
+            //     context,
+            //     MaterialPageRoute(builder: (context) => MealEdit()),
+            //   );
+            // },
             onPressed: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => MealEdit()),
+                MaterialPageRoute(builder: (context) => const Settings()),
               );
             },
             backgroundColor: Colors.blueAccent,
