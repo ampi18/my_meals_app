@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:my_meals_app/screens/meals_list.dart';
+import 'package:my_meals_app/screens/meals_list_screen.dart';
 
 void main() {
   runApp(const MainApp());

@@ -55,7 +55,7 @@ class DatabaseService {
         rating: 5,
         origin: Origin.delivery,
         source: 'lieferando/myfavchineserestaurant',
-        date: DateTime.now(),
+        date: DateTime.parse('2023-03-01'),
         comment: 'Was totally delicious',
       ),
     );
@@ -67,7 +67,7 @@ class DatabaseService {
         rating: 3,
         origin: Origin.restaurant,
         source: 'Some breakfast place in Würzburg',
-        date: DateTime.now(),
+        date: DateTime.parse('2022-11-13'),
         comment: 'Seemed dry, but okay with Nutella',
       ),
     );
@@ -79,7 +79,7 @@ class DatabaseService {
         rating: 5,
         origin: Origin.other,
         source: 'at my grandmothers place',
-        date: DateTime.now(),
+        date: DateTime.parse('2019-06-12'),
         comment: 'best you can get',
       ),
     );
@@ -94,9 +94,31 @@ class DatabaseService {
     );
   }
 
-  Future<List<Meal>> meals() async {
+  Future<List<Meal>> mealsDescendingAlphabetically() async {
     final db = await _databaseService.database;
-    final List<Map<String, dynamic>> maps = await db.query('meal');
+    final List<Map<String, dynamic>> maps =
+        await db.query('meal', orderBy: 'name DESC');
+    return List.generate(maps.length, (index) => Meal.fromMap(maps[index]));
+  }
+
+  Future<List<Meal>> mealsAscendingAlphabetically() async {
+    final db = await _databaseService.database;
+    final List<Map<String, dynamic>> maps =
+        await db.query('meal', orderBy: 'name ASC');
+    return List.generate(maps.length, (index) => Meal.fromMap(maps[index]));
+  }
+
+  Future<List<Meal>> mealsDescendingByDate() async {
+    final db = await _databaseService.database;
+    final List<Map<String, dynamic>> maps =
+        await db.query('meal', orderBy: 'date DESC');
+    return List.generate(maps.length, (index) => Meal.fromMap(maps[index]));
+  }
+
+  Future<List<Meal>> mealsAscendingByDate() async {
+    final db = await _databaseService.database;
+    final List<Map<String, dynamic>> maps =
+        await db.query('meal', orderBy: 'date ASC');
     return List.generate(maps.length, (index) => Meal.fromMap(maps[index]));
   }
 
