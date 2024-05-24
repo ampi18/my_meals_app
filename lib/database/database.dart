@@ -94,31 +94,28 @@ class DatabaseService {
     );
   }
 
-  Future<List<Meal>> mealsDescendingAlphabetically() async {
+  Future<List<Meal>> meals(
+      {bool ascending = true,
+      List<int>? ratings,
+      List<int>? mealTimes,
+      List<int>? origins}) async {
     final db = await _databaseService.database;
-    final List<Map<String, dynamic>> maps =
-        await db.query('meal', orderBy: 'name DESC');
-    return List.generate(maps.length, (index) => Meal.fromMap(maps[index]));
-  }
 
-  Future<List<Meal>> mealsAscendingAlphabetically() async {
-    final db = await _databaseService.database;
-    final List<Map<String, dynamic>> maps =
-        await db.query('meal', orderBy: 'name ASC');
-    return List.generate(maps.length, (index) => Meal.fromMap(maps[index]));
-  }
+    final String sortOrder = ascending ? 'ASC' : 'DESC';
+    ratings ??= List<int>.generate(5, (index) => index + 1);
+    mealTimes ??= List<int>.generate(4, (index) => index);
+    origins ??= List<int>.generate(4, (index) => index);
 
-  Future<List<Meal>> mealsDescendingByDate() async {
-    final db = await _databaseService.database;
-    final List<Map<String, dynamic>> maps =
-        await db.query('meal', orderBy: 'date DESC');
-    return List.generate(maps.length, (index) => Meal.fromMap(maps[index]));
-  }
+    final List<Map<String, dynamic>> maps = await db.query(
+      'meal',
+      orderBy: 'date $sortOrder',
+      where:
+          'rating IN (${List<String>.filled(ratings.length, '?').join(', ')}) '
+          'AND mealTime IN (${List<String>.filled(mealTimes.length, '?').join(', ')}) '
+          'AND origin IN (${List<String>.filled(origins.length, '?').join(', ')}) ',
+      whereArgs: [...ratings, ...mealTimes, ...origins],
+    );
 
-  Future<List<Meal>> mealsAscendingByDate() async {
-    final db = await _databaseService.database;
-    final List<Map<String, dynamic>> maps =
-        await db.query('meal', orderBy: 'date ASC');
     return List.generate(maps.length, (index) => Meal.fromMap(maps[index]));
   }
 

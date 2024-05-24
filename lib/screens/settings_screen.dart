@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:my_meals_app/components/date_format_toggle_button.dart';
-import 'package:my_meals_app/components/theme_toggle_button.dart';
+import 'package:my_meals_app/components/buttons/date_format_toggle_button.dart';
+import 'package:my_meals_app/components/buttons/theme_toggle_button.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class Settings extends StatelessWidget {
