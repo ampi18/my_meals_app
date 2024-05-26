@@ -1,5 +1,5 @@
-import 'package:my_meals_app/models/meal_time.dart';
-import 'package:my_meals_app/models/origin.dart';
+import 'package:my_meals_app/logic/models/meal_time.dart';
+import 'package:my_meals_app/logic/models/origin.dart';
 
 class Meal {
   late int id;

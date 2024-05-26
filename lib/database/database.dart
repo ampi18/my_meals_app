@@ -1,6 +1,6 @@
-import 'package:my_meals_app/models/meal.dart';
-import 'package:my_meals_app/models/meal_time.dart';
-import 'package:my_meals_app/models/origin.dart';
+import 'package:my_meals_app/logic/models/meal.dart';
+import 'package:my_meals_app/logic/models/meal_time.dart';
+import 'package:my_meals_app/logic/models/origin.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 
@@ -117,6 +117,13 @@ class DatabaseService {
     );
 
     return List.generate(maps.length, (index) => Meal.fromMap(maps[index]));
+  }
+
+  Future<Meal> meal(int id) async {
+    final db = await _databaseService.database;
+    final List<Map<String, dynamic>> maps =
+        await db.query('meal', where: 'id = ?', whereArgs: [id]);
+    return Meal.fromMap(maps.first);
   }
 
   Future<List<Meal>> findByName(String name) async {

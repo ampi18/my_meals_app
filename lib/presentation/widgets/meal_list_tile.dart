@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:my_meals_app/models/meal.dart';
+import 'package:my_meals_app/logic/models/meal.dart';
 import 'package:intl/intl.dart';
-import 'package:my_meals_app/components/rating.dart';
+import 'package:my_meals_app/presentation/widgets/rating.dart';
 
 class MealListTile extends StatelessWidget {
   final Meal meal;

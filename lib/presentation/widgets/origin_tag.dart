@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:my_meals_app/models/origin.dart';
+import 'package:my_meals_app/logic/models/origin.dart';
 
 class OriginTag extends StatelessWidget {
   final Origin origin;

@@ -1,22 +1,21 @@
 import 'package:flutter/material.dart';
-import 'package:my_meals_app/models/meal_time.dart';
+import 'package:my_meals_app/logic/models/origin.dart';
 
-class FilterMealtimeButton extends StatefulWidget {
-  const FilterMealtimeButton({super.key, required this.onSelectionChanged});
+class FilterOriginButton extends StatefulWidget {
+  const FilterOriginButton({super.key, required this.onSelectionChanged});
   final Function onSelectionChanged;
 
   @override
-  State<FilterMealtimeButton> createState() => _FilterMealtimeButtonState();
+  State<FilterOriginButton> createState() => _FilterOriginButtonState();
 }
 
-class _FilterMealtimeButtonState extends State<FilterMealtimeButton> {
-  List<bool> selectedMealtimes = List<bool>.filled(4, true);
+class _FilterOriginButtonState extends State<FilterOriginButton> {
+  List<bool> selectedOrigins = List<bool>.filled(4, true);
 
   @override
   Widget build(BuildContext context) {
     return Container(
         padding: const EdgeInsets.all(8),
-        margin: const EdgeInsets.symmetric(horizontal: 4),
         decoration: BoxDecoration(
           border: Border.all(color: const Color(0xff79747e)),
           borderRadius: BorderRadius.circular(30),
@@ -29,7 +28,7 @@ class _FilterMealtimeButtonState extends State<FilterMealtimeButton> {
                 Icons.filter_alt,
                 color: Color(0xff6750a4),
               ),
-              Text('Mealtime', style: TextStyle(color: Color(0xff6750a4))),
+              Text('Origin', style: TextStyle(color: Color(0xff6750a4))),
             ],
           ),
           itemBuilder: (context) =>
@@ -39,19 +38,17 @@ class _FilterMealtimeButtonState extends State<FilterMealtimeButton> {
               child: StatefulBuilder(
                 builder: (BuildContext context, StateSetter setState) {
                   return CheckboxListTile(
-                    value: selectedMealtimes[index],
+                    value: selectedOrigins[index],
                     onChanged: (bool? value) {
                       if (value == false &&
-                          selectedMealtimes
-                                  .where((element) => element)
-                                  .length ==
+                          selectedOrigins.where((element) => element).length ==
                               1) {
                         // Prevent unchecking the last checked checkbox
                         return;
                       }
                       setState(() {
-                        selectedMealtimes[index] = value!;
-                        widget.onSelectionChanged(selectedMealtimes
+                        selectedOrigins[index] = value!;
+                        widget.onSelectionChanged(selectedOrigins
                             .asMap()
                             .entries
                             .where((entry) => entry.value)
@@ -59,7 +56,7 @@ class _FilterMealtimeButtonState extends State<FilterMealtimeButton> {
                             .toList());
                       });
                     },
-                    title: Text(MealTime.values[index].toString()),
+                    title: Text(Origin.values[index].toString()),
                   );
                 },
               ),

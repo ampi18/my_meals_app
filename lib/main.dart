@@ -1,17 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:my_meals_app/screens/meals_list_screen.dart';
+import 'package:my_meals_app/presentation/screens/meals_list_screen.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:my_meals_app/logic/bloc/meals_bloc.dart';
 
 void main() {
-  runApp(const MainApp());
-}
-
-class MainApp extends StatelessWidget {
-  const MainApp({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return const MaterialApp(
-      home: MealsList(),
-    );
-  }
+  runApp(BlocProvider(
+    create: (context) => MealsBloc(),
+    child: const MaterialApp(
+      title: 'My Meals',
+      home: MealsListScreen(),
+    ),
+  ));
 }

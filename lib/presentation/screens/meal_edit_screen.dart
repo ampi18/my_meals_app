@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:my_meals_app/components/datebox.dart';
-import 'package:my_meals_app/components/name_search_bar.dart';
-import 'package:my_meals_app/components/radio_group.dart';
-import 'package:my_meals_app/components/buttons/rating_buttons.dart';
-import 'package:my_meals_app/models/meal_time.dart';
-import 'package:my_meals_app/models/origin.dart';
+import 'package:my_meals_app/presentation/widgets/datebox.dart';
+import 'package:my_meals_app/presentation/widgets/name_search_bar.dart';
+import 'package:my_meals_app/presentation/widgets/radio_group.dart';
+import 'package:my_meals_app/presentation/widgets/buttons/rating_buttons.dart';
+import 'package:my_meals_app/logic/models/meal_time.dart';
+import 'package:my_meals_app/logic/models/origin.dart';
 
 class MealEdit extends StatelessWidget {
   const MealEdit({super.key});
