@@ -7,6 +7,7 @@ import 'package:my_meals_app/presentation/widgets/buttons/filter_rating_button.d
 import 'package:my_meals_app/presentation/widgets/meal_list_tile.dart';
 import 'package:my_meals_app/presentation/widgets/buttons/toggle_arrow_button.dart';
 import 'package:my_meals_app/presentation/screens/meal_details_screen.dart';
+import 'package:my_meals_app/presentation/widgets/search_bar.dart';
 
 class ShowMealsList extends StatefulWidget {
   const ShowMealsList({super.key});
@@ -36,7 +37,17 @@ class _ShowMealsListState extends State<ShowMealsList> {
           MealsLoaded() => Column(
               children: [
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 8),
+                  padding: const EdgeInsets.all(8.0),
+                  child: ListSearchBar(
+                    onInputChanged: (String searchText) {
+                      _mealsBloc.add(RequestToLoadMeals(
+                        searchText: searchText,
+                      ));
+                    },
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -80,19 +91,18 @@ class _ShowMealsListState extends State<ShowMealsList> {
                           itemCount: state.meals.length,
                           itemBuilder: (context, index) {
                             return MealListTile(
-                              meal: state.meals[index],
-                              onTap: (meal) {
-                                _mealsBloc.add(RequestToLoadSingleMeal(
-                                  id: meal.id,
-                                ));
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => const MealDetails(),
-                                  ),
-                                );
-                              },
-                            );
+                                meal: state.meals[index],
+                                onTap: (meal) {
+                                  _mealsBloc.add(RequestToLoadSingleMeal(
+                                    id: meal.id,
+                                  ));
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => const MealDetails(),
+                                    ),
+                                  );
+                                });
                           },
                         ),
                       )

@@ -20,3 +20,9 @@ final class SingleMealLoaded extends MealsState {
 
   SingleMealLoaded(this.meal);
 }
+
+final class MealUpdated extends MealsState {
+  final Meal meal;
+
+  MealUpdated(this.meal);
+}

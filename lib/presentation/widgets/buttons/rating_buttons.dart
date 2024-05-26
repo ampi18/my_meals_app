@@ -1,14 +1,26 @@
 import 'package:flutter/material.dart';
 
 class RatingButtons extends StatefulWidget {
-  const RatingButtons({Key? key}) : super(key: key);
+  final int? initalRating;
+  final Function(int) onRatingChanged;
+
+  const RatingButtons(
+      {super.key, this.initalRating, required this.onRatingChanged});
 
   @override
   State<RatingButtons> createState() => _RatingButtonsState();
 }
 
 class _RatingButtonsState extends State<RatingButtons> {
-  List<bool> isFilled = List.generate(5, (index) => false);
+  late List<bool> isFilled;
+
+  @override
+  void initState() {
+    super.initState();
+    isFilled = widget.initalRating != null
+        ? List.generate(5, (index) => index < widget.initalRating!)
+        : List.from([true, false, false, false, false]);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +30,7 @@ class _RatingButtonsState extends State<RatingButtons> {
         return IconButton(
           icon: Icon(
             isFilled[index] ? Icons.star : Icons.star_border,
-            color: Colors.yellow, // Customize the color as needed
+            color: Colors.yellow,
           ),
           onPressed: () {
             onIconPressed(index);
@@ -37,5 +49,6 @@ class _RatingButtonsState extends State<RatingButtons> {
         isFilled[i] = false;
       }
     });
+    widget.onRatingChanged(index + 1);
   }
 }

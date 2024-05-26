@@ -24,9 +24,7 @@ class NameSearchBar extends StatelessWidget {
           return matches;
         }
       },
-      onSelected: (String selection) {
-        print('You just selected $selection');
-      },
+      onSelected: (String selection) {},
       fieldViewBuilder: (BuildContext context,
           TextEditingController textEditingController,
           FocusNode focusNode,

@@ -22,38 +22,32 @@ class MealEdit extends StatelessWidget {
           children: [
             NameSearchBar(),
             const SizedBox(height: 16),
-            const DateBox(),
+            DateBox(
+              onDateChanged: (date) {},
+            ),
             const SizedBox(height: 16),
-            const RatingButtons(),
+            RatingButtons(
+              onRatingChanged: (rating) {},
+            ),
             const SizedBox(height: 16),
             RadioGroup<MealTime>(
               values: MealTime.values,
               selectedValue: MealTime.breakfast,
-              onChanged: (value) {
-                print('Selected value: $value');
-              },
+              onChanged: (value) {},
             ),
             const SizedBox(height: 16),
             RadioGroup<Origin>(
               values: Origin.values,
               selectedValue: Origin.homecooked,
-              onChanged: (value) {
-                print('Selected value: $value');
-              },
+              onChanged: (value) {},
             ),
             const SizedBox(height: 16),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
+                ElevatedButton(onPressed: () {}, child: const Text('Discard')),
                 ElevatedButton(
-                    onPressed: () {
-                      print('Discard button pressed');
-                    },
-                    child: const Text('Discard')),
-                ElevatedButton(
-                  onPressed: () {
-                    print('Save button pressed');
-                  },
+                  onPressed: () {},
                   child: const Text('Save'),
                 ),
               ],

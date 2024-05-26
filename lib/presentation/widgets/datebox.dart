@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class DateBox extends StatefulWidget {
-  const DateBox({super.key});
+  const DateBox({super.key, required this.onDateChanged});
+  final Function(DateTime) onDateChanged;
 
   @override
   State<DateBox> createState() => _DateBoxState();
@@ -39,6 +40,8 @@ class _DateBoxState extends State<DateBox> {
         textEditingController.text =
             DateFormat('dd.MM.yyyy').format(_selectedDate);
       });
+
+      widget.onDateChanged(_selectedDate);
     }
   }
 

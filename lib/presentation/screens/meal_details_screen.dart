@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_meals_app/logic/bloc/meals_bloc.dart';
-import 'package:my_meals_app/presentation/widgets/origin_tag.dart';
-import 'package:my_meals_app/presentation/widgets/rating.dart';
-import 'package:intl/intl.dart';
+import 'package:my_meals_app/presentation/widgets/meal_form.dart';
 
 class MealDetails extends StatefulWidget {
   const MealDetails({
@@ -29,39 +27,21 @@ class _MealDetailsState extends State<MealDetails> {
       bloc: _mealsBloc,
       builder: (context, state) {
         return Scaffold(
-            appBar: AppBar(
-              title: Text('state.meal.name'),
-              centerTitle: true,
-              leading: IconButton(
-                icon: Icon(Icons.arrow_back),
-                onPressed: () {
-                  _mealsBloc.add(RequestToLoadMeals());
-                  Navigator.pop(context);
-                },
-              ),
+          appBar: AppBar(
+            title: state is SingleMealLoaded
+                ? Text(state.meal.name)
+                : const Text('Meal Details'),
+            centerTitle: true,
+            leading: IconButton(
+              icon: const Icon(Icons.arrow_back),
+              onPressed: () {
+                _mealsBloc.add(RequestToLoadMeals());
+                Navigator.pop(context);
+              },
             ),
-            body: switch (state) {
-              LoadingSingleMeal() =>
-                const Center(child: CircularProgressIndicator()),
-              SingleMealLoaded() => Container(
-                  padding: const EdgeInsets.all(16),
-                  child: Column(
-                    children: [
-                      Rating(rating: state.meal.rating),
-                      const SizedBox(height: 10),
-                      Text(state.meal.mealTime.name),
-                      const SizedBox(height: 10),
-                      OriginTag(origin: state.meal.origin),
-                      Text(DateFormat('dd.MM.yyyy').format(state.meal.date)),
-                      Text(
-                        state.meal.comment ?? '',
-                        textAlign: TextAlign.center,
-                      ),
-                    ],
-                  ),
-                ),
-              _ => Container(),
-            });
+          ),
+          body: const MealForm(),
+        );
       },
     );
   }

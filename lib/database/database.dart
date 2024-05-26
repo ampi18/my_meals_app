@@ -94,11 +94,13 @@ class DatabaseService {
     );
   }
 
-  Future<List<Meal>> meals(
-      {bool ascending = true,
-      List<int>? ratings,
-      List<int>? mealTimes,
-      List<int>? origins}) async {
+  Future<List<Meal>> meals({
+    bool ascending = true,
+    List<int>? ratings,
+    List<int>? mealTimes,
+    List<int>? origins,
+    String searchText = '',
+  }) async {
     final db = await _databaseService.database;
 
     final String sortOrder = ascending ? 'ASC' : 'DESC';
@@ -106,14 +108,36 @@ class DatabaseService {
     mealTimes ??= List<int>.generate(4, (index) => index);
     origins ??= List<int>.generate(4, (index) => index);
 
+    // final List<Map<String, dynamic>> maps = await db.query(
+    //   'meal',
+    //   orderBy: 'date $sortOrder',
+    //   where:
+    //       'rating IN (${List<String>.filled(ratings.length, '?').join(', ')}) '
+    //       'AND mealTime IN (${List<String>.filled(mealTimes.length, '?').join(', ')}) '
+    //       'AND origin IN (${List<String>.filled(origins.length, '?').join(', ')}) ',
+    //   whereArgs: [...ratings, ...mealTimes, ...origins],
+    // );
+
+    List<String> whereClauses = [
+      'rating IN (${List<String>.filled(ratings.length, '?').join(', ')})',
+      'mealTime IN (${List<String>.filled(mealTimes.length, '?').join(', ')})',
+      'origin IN (${List<String>.filled(origins.length, '?').join(', ')})'
+    ];
+
+    List<dynamic> whereArgs = [...ratings, ...mealTimes, ...origins];
+
+    if (searchText.isNotEmpty) {
+      whereClauses.add('name LIKE ?');
+      whereArgs.add('%$searchText%');
+    }
+
+    final String whereClause = whereClauses.join(' AND ');
+
     final List<Map<String, dynamic>> maps = await db.query(
       'meal',
       orderBy: 'date $sortOrder',
-      where:
-          'rating IN (${List<String>.filled(ratings.length, '?').join(', ')}) '
-          'AND mealTime IN (${List<String>.filled(mealTimes.length, '?').join(', ')}) '
-          'AND origin IN (${List<String>.filled(origins.length, '?').join(', ')}) ',
-      whereArgs: [...ratings, ...mealTimes, ...origins],
+      where: whereClause,
+      whereArgs: whereArgs,
     );
 
     return List.generate(maps.length, (index) => Meal.fromMap(maps[index]));
@@ -124,14 +148,6 @@ class DatabaseService {
     final List<Map<String, dynamic>> maps =
         await db.query('meal', where: 'id = ?', whereArgs: [id]);
     return Meal.fromMap(maps.first);
-  }
-
-  Future<List<Meal>> findByName(String name) async {
-    final db = await _databaseService.database;
-    final q = "$name%";
-    final List<Map<String, dynamic>> maps =
-        await db.query('meal', where: 'name like ?', whereArgs: [q]);
-    return List.generate(maps.length, (index) => Meal.fromMap(maps[index]));
   }
 
   Future<void> updateMeal(Meal meal) async {
