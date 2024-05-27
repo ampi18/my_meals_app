@@ -16,6 +16,7 @@ dependencies:
   bloc: ^8.1.4
   flutter_bloc: ^8.1.5
   meta: ^1.11.0
+  shared_preferences: ^2.2.2
   
 dev_dependencies:
   flutter_test:
@@ -31,8 +32,8 @@ flutter:
 flutter_launcher_icons:
   android: "launcher_icon"
   ios: true
-  image_path: "assets/images/favicon.png"
+  image_path: "assets/images/launcher_icon.png"
   web:
     generate: true
-    image_path: "assets/images/favicon.png"
+    image_path: "assets/images/launcher_icon.png"
 

@@ -64,59 +64,5 @@ class Settings extends StatelessWidget {
         ),
       ),
     );
-
-    //     Column(
-    //       crossAxisAlignment: CrossAxisAlignment.start,
-    //       children: [
-    //         Row(
-    //           children: [
-    //         const Row(
-    //           mainAxisAlignment: MainAxisAlignment.start,
-    //           children: [
-    //             Text('Theme: '),
-    //             SizedBox(width: 8),
-    //             ThemeToggleButton(),
-    //           ],
-    //         ),
-    //         const SizedBox(height: 16),
-    //         const Row(
-    //           mainAxisAlignment: MainAxisAlignment.start,
-    //           children: [
-    //             Text('Date Format: '),
-    //             SizedBox(width: 8),
-    //             DateFormatToggleButton(),
-    //           ],
-    //         ),
-    //         const SizedBox(height: 16),
-    //         const Text('Version: 1.0.0'),
-    //         const SizedBox(height: 16),
-    //         const Text('Developer: Amelie Popp'),
-    //         const SizedBox(height: 16),
-    //         Row(
-    //           children: [
-    //             const Text('Contact: '),
-    //             GestureDetector(
-    //               onTap: () async {
-    //                 final Uri emailLaunchUri = Uri(
-    //                     scheme: 'mailto',
-    //                     path: 'amelie.popp@study.thws.de',
-    //                     queryParameters: {'subject': 'Feedback'});
-
-    //                 await launchUrl(emailLaunchUri);
-    //               },
-    //               child: const Text(
-    //                 'amelie.popp@study.thws.de',
-    //                 style: TextStyle(
-    //                   color: Colors.blue,
-    //                   decoration: TextDecoration.underline,
-    //                 ),
-    //               ),
-    //             ),
-    //           ],
-    //         ),
-    //       ],
-    //     ),
-    //   ),
-    // );
   }
 }

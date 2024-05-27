@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:my_meals_app/logic/bloc/settings/settings_bloc.dart';
 import 'package:my_meals_app/logic/models/meal.dart';
 import 'package:intl/intl.dart';
 import 'package:my_meals_app/presentation/widgets/rating.dart';
@@ -17,7 +19,7 @@ class MealListTile extends StatelessWidget {
           padding: const EdgeInsets.all(8),
           margin: const EdgeInsets.all(8),
           decoration: BoxDecoration(
-            color: Colors.white,
+            color: Theme.of(context).colorScheme.surface,
             border: Border.all(color: Colors.blue),
             borderRadius: BorderRadius.circular(8),
             boxShadow: const [
@@ -58,7 +60,17 @@ class MealListTile extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
                     Rating(rating: meal.rating),
-                    Text(DateFormat('dd.MM.yyyy').format(meal.date)),
+                    BlocBuilder<SettingsBloc, SettingsState>(
+                      builder: (context, state) {
+                        if (state is SettingsLoaded) {
+                          return Text(
+                              DateFormat(state.dateFormat).format(meal.date));
+                        } else {
+                          return Text(
+                              DateFormat('dd.MM.yyyy').format(meal.date));
+                        }
+                      },
+                    ),
                   ],
                 )
               ],

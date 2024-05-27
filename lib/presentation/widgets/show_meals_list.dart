@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:my_meals_app/logic/bloc/meals_bloc.dart';
+import 'package:my_meals_app/logic/bloc/meals/meals_bloc.dart';
 import 'package:my_meals_app/presentation/widgets/buttons/filter_mealtime_button.dart';
 import 'package:my_meals_app/presentation/widgets/buttons/filter_origin_button.dart';
 import 'package:my_meals_app/presentation/widgets/buttons/filter_rating_button.dart';

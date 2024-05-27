@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
+import 'package:my_meals_app/logic/bloc/settings/settings_bloc.dart';
 
 class DateBox extends StatefulWidget {
   const DateBox({super.key, required this.onDateChanged, this.readOnly = true});
@@ -13,11 +15,16 @@ class DateBox extends StatefulWidget {
 class _DateBoxState extends State<DateBox> {
   final TextEditingController textEditingController = TextEditingController();
   DateTime _selectedDate = DateTime.now();
+  late SettingsBloc _settingsBloc;
 
   @override
   void initState() {
-    textEditingController.text =
-        DateFormat('dd.MM.yyyy').format(DateTime.now());
+    _settingsBloc = BlocProvider.of<SettingsBloc>(context);
+    textEditingController.text = DateFormat(
+            _settingsBloc.state is SettingsLoaded
+                ? (_settingsBloc.state as SettingsLoaded).dateFormat
+                : 'dd.MM.yyyy')
+        .format(DateTime.now());
     super.initState();
   }
 
@@ -38,8 +45,11 @@ class _DateBoxState extends State<DateBox> {
     if (pickedDate != null && pickedDate != _selectedDate) {
       setState(() {
         _selectedDate = pickedDate;
-        textEditingController.text =
-            DateFormat('dd.MM.yyyy').format(_selectedDate);
+        textEditingController.text = DateFormat(
+                _settingsBloc.state is SettingsLoaded
+                    ? (_settingsBloc.state as SettingsLoaded).dateFormat
+                    : 'dd.MM.yyyy')
+            .format(_selectedDate);
       });
 
       widget.onDateChanged(_selectedDate);

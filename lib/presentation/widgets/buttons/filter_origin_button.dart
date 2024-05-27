@@ -21,14 +21,16 @@ class _FilterOriginButtonState extends State<FilterOriginButton> {
           borderRadius: BorderRadius.circular(30),
         ),
         child: PopupMenuButton<int>(
-          child: const Row(
+          child: Row(
             mainAxisSize: MainAxisSize.min,
             children: [
               Icon(
                 Icons.filter_alt,
-                color: Color(0xff6750a4),
+                color: Theme.of(context).colorScheme.primary,
               ),
-              Text('Origin', style: TextStyle(color: Color(0xff6750a4))),
+              Text('Origin',
+                  style:
+                      TextStyle(color: Theme.of(context).colorScheme.primary)),
             ],
           ),
           itemBuilder: (context) =>

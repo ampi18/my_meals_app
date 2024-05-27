@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:my_meals_app/logic/bloc/settings/settings_bloc.dart';
 
 class DateFormatToggleButton extends StatefulWidget {
   const DateFormatToggleButton({super.key});
@@ -9,37 +11,44 @@ class DateFormatToggleButton extends StatefulWidget {
 
 class _DateFormatToggleButtonState extends State<DateFormatToggleButton> {
   final List<String> formats = ['dd.mm.yyyy', 'mm/dd/yyyy', 'yyyy-mm-dd'];
-  final List<bool> _toggleButtonsSelection = [true, false, false];
+
+  late SettingsBloc _settingsBloc;
+
+  @override
+  void initState() {
+    super.initState();
+    _settingsBloc = BlocProvider.of<SettingsBloc>(context);
+  }
 
   @override
   Widget build(BuildContext context) {
-    return ToggleButtons(
-      isSelected: _toggleButtonsSelection,
-      onPressed: (int index) {
-        setState(() {
-          for (int buttonIndex = 0;
-              buttonIndex < _toggleButtonsSelection.length;
-              buttonIndex++) {
-            if (buttonIndex == index) {
-              _toggleButtonsSelection[buttonIndex] = true;
-            } else {
-              _toggleButtonsSelection[buttonIndex] = false;
-            }
-          }
-        });
+    return BlocBuilder<SettingsBloc, SettingsState>(
+      bloc: _settingsBloc,
+      builder: (context, state) {
+        return switch (state) {
+          SettingsLoaded() => ToggleButtons(
+              isSelected:
+                  formats.map((format) => format == state.dateFormat).toList(),
+              onPressed: (int index) {
+                _settingsBloc
+                    .add(RequestToUpdateSettings(dateFormat: formats[index]));
+              },
+              constraints: const BoxConstraints(
+                minHeight: 32.0,
+                maxHeight: 32.0,
+                minWidth: 90.0,
+                maxWidth: 90.0,
+              ),
+              children: formats
+                  .map((format) => Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(format),
+                      ))
+                  .toList(),
+            ),
+          _ => const Text('could not read current date format'),
+        };
       },
-      constraints: const BoxConstraints(
-        minHeight: 32.0,
-        maxHeight: 32.0,
-        minWidth: 90.0,
-        maxWidth: 90.0,
-      ),
-      children: formats
-          .map((format) => Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Text(format),
-              ))
-          .toList(),
     );
   }
 }

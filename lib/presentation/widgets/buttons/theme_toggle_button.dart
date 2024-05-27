@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:my_meals_app/logic/bloc/settings/settings_bloc.dart';
 
 class ThemeToggleButton extends StatefulWidget {
   const ThemeToggleButton({super.key});
@@ -9,32 +11,37 @@ class ThemeToggleButton extends StatefulWidget {
 
 class _ThemeToggleButtonState extends State<ThemeToggleButton> {
   final List<String> themes = ['Light', 'Dark'];
-  final List<bool> _toggleButtonsSelection = [true, false];
+  late SettingsBloc _settingsBloc;
+
+  @override
+  void initState() {
+    super.initState();
+    _settingsBloc = BlocProvider.of<SettingsBloc>(context);
+  }
 
   @override
   Widget build(BuildContext context) {
-    return ToggleButtons(
-      isSelected: _toggleButtonsSelection,
-      onPressed: (int index) {
-        setState(() {
-          for (int buttonIndex = 0;
-              buttonIndex < _toggleButtonsSelection.length;
-              buttonIndex++) {
-            if (buttonIndex == index) {
-              _toggleButtonsSelection[buttonIndex] = true;
-            } else {
-              _toggleButtonsSelection[buttonIndex] = false;
-            }
-          }
-        });
+    return BlocBuilder<SettingsBloc, SettingsState>(
+      bloc: _settingsBloc,
+      builder: (context, state) {
+        return switch (state) {
+          SettingsLoaded() => ToggleButtons(
+              isSelected: themes.map((theme) => theme == state.theme).toList(),
+              onPressed: (int index) {
+                _settingsBloc
+                    .add(RequestToUpdateSettings(theme: themes[index]));
+              },
+              constraints: const BoxConstraints(
+                minHeight: 32.0,
+                maxHeight: 32.0,
+                minWidth: 90.0,
+                maxWidth: 90.0,
+              ),
+              children: themes.map((theme) => Text(theme)).toList(),
+            ),
+          _ => const Text('could not read current theme'),
+        };
       },
-      constraints: const BoxConstraints(
-        minHeight: 32.0,
-        maxHeight: 32.0,
-        minWidth: 90.0,
-        maxWidth: 90.0,
-      ),
-      children: themes.map((theme) => Text(theme)).toList(),
     );
   }
 }

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:my_meals_app/logic/bloc/meals_bloc.dart';
+import 'package:my_meals_app/logic/bloc/meals/meals_bloc.dart';
 import 'package:my_meals_app/presentation/screens/meal_details_screen.dart';
+import 'package:my_meals_app/presentation/screens/settings_screen.dart';
 import 'package:my_meals_app/presentation/widgets/show_meals_list.dart';
 
 class MealsListScreen extends StatelessWidget {
@@ -17,6 +19,48 @@ class MealsListScreen extends StatelessWidget {
               centerTitle: true,
             ),
             body: const ShowMealsList(),
+            drawer: Drawer(
+              child: ListView(
+                padding: EdgeInsets.zero,
+                children: <Widget>[
+                  const DrawerHeader(
+                    decoration: BoxDecoration(
+                      image: DecorationImage(
+                        image: AssetImage(
+                            'assets/images/drawer_header_background.jpg'),
+                        fit: BoxFit.cover,
+                      ),
+                      color: Colors.blueGrey,
+                    ),
+                    child: Align(
+                      alignment: Alignment.bottomCenter,
+                      child: Text(
+                        'My Meals',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 24,
+                        ),
+                      ),
+                    ),
+                  ),
+                  ListTile(
+                    title: const Text('Settings'),
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const Settings()));
+                    },
+                  ),
+                  ListTile(
+                    title: const Text('Info'),
+                    onTap: () {
+                      Navigator.pop(context);
+                    },
+                  ),
+                ],
+              ),
+            ),
             floatingActionButton: FloatingActionButton(
               onPressed: () {
                 BlocProvider.of<MealsBloc>(context).add(RequestToAddMeal());
