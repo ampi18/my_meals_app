@@ -102,7 +102,8 @@ class MealFormState extends State<MealForm> {
                             children: <Widget>[
                               ElevatedButton(
                                 onPressed: () {
-                                  _mealsBloc.add(RequestToLoadSingleMeal(id: state.meal.id));
+                                  _mealsBloc.add(RequestToLoadSingleMeal(
+                                      id: state.meal.id));
                                 },
                                 child: const Text('Cancel'),
                               ),

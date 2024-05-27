@@ -3,6 +3,8 @@ import 'package:meta/meta.dart';
 import 'package:my_meals_app/database/database.dart';
 
 import 'package:my_meals_app/logic/models/meal.dart';
+import 'package:my_meals_app/logic/models/meal_time.dart';
+import 'package:my_meals_app/logic/models/origin.dart';
 
 part 'meals_event.dart';
 part 'meals_state.dart';
@@ -29,6 +31,20 @@ class MealsBloc extends Bloc<MealsEvent, MealsState> {
     on<RequestToEditMeal>((event, emit) async {
       emit(SingleMealLoaded(event.meal, readOnly: false));
     });
+
+    on<RequestToAddMeal>((event, emit) async {
+      emit(SingleMealLoaded(
+          Meal(
+            id: 0,
+            name: '',
+            rating: 0,
+            mealTime: MealTime.breakfast,
+            origin: Origin.homecooked,
+            source: '',
+            date: DateTime.now(),
+          ),
+          readOnly: false));
+    });
   }
 
   _loadMeals(RequestToLoadMeals event, Emitter<MealsState> emit) async {
@@ -50,7 +66,8 @@ class MealsBloc extends Bloc<MealsEvent, MealsState> {
         searchText: searchText);
   }
 
-  _loadSingleMeal(RequestToLoadSingleMeal event, Emitter<MealsState> emit) async {
+  _loadSingleMeal(
+      RequestToLoadSingleMeal event, Emitter<MealsState> emit) async {
     emit(LoadingSingleMeal());
     final meal = await _databaseService.meal(event.id);
     emit(SingleMealLoaded(meal, readOnly: true));
@@ -58,8 +75,14 @@ class MealsBloc extends Bloc<MealsEvent, MealsState> {
 
   _updateMeal(RequestToUpdateMeal event, Emitter<MealsState> emit) async {
     emit(UpdatingMeal());
-    await _databaseService
-        .updateMeal(event.meal)
-        .then((value) => this.add(RequestToLoadSingleMeal(id: event.meal.id)));
+    if (event.meal.id == 0) {
+      await _databaseService
+          .insertMeal(event.meal)
+          .then((value) => add(RequestToLoadSingleMeal(id: value)));
+    } else {
+      await _databaseService
+          .updateMeal(event.meal)
+          .then((value) => add(RequestToLoadSingleMeal(id: event.meal.id)));
+    }
   }
 }

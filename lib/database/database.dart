@@ -85,9 +85,9 @@ class DatabaseService {
     );
   }
 
-  Future<void> insertMeal(Meal meal) async {
+  Future<int> insertMeal(Meal meal) async {
     final db = await _databaseService.database;
-    await db.insert(
+    return await db.insert(
       'meal',
       meal.toMap(),
       conflictAlgorithm: ConflictAlgorithm.replace,

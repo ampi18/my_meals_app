@@ -37,3 +37,5 @@ final class RequestToUpdateMeal extends MealsEvent {
 
   RequestToUpdateMeal({required this.meal});
 }
+
+final class RequestToAddMeal extends MealsEvent {}
