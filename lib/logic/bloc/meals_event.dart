@@ -26,6 +26,12 @@ final class RequestToLoadSingleMeal extends MealsEvent {
   RequestToLoadSingleMeal({required this.id});
 }
 
+final class RequestToEditMeal extends MealsEvent {
+  final Meal meal;
+
+  RequestToEditMeal({required this.meal});
+}
+
 final class RequestToUpdateMeal extends MealsEvent {
   final Meal meal;
 

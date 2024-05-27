@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class DateBox extends StatefulWidget {
-  const DateBox({super.key, required this.onDateChanged});
+  const DateBox({super.key, required this.onDateChanged, this.readOnly = true});
   final Function(DateTime) onDateChanged;
+  final bool readOnly;
 
   @override
   State<DateBox> createState() => _DateBoxState();
@@ -51,6 +52,7 @@ class _DateBoxState extends State<DateBox> {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         TextField(
+          readOnly: widget.readOnly,
           controller: textEditingController,
           keyboardType: TextInputType.none,
           decoration: InputDecoration(
@@ -59,7 +61,11 @@ class _DateBoxState extends State<DateBox> {
               borderRadius: BorderRadius.circular(10),
             ),
           ),
-          onTap: () => _selectDate(context),
+          onTap: () {
+            if (!widget.readOnly) {
+              _selectDate(context);
+            }
+          },
         ),
       ],
     );

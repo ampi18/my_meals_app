@@ -3,9 +3,13 @@ import 'package:flutter/material.dart';
 class RatingButtons extends StatefulWidget {
   final int? initalRating;
   final Function(int) onRatingChanged;
+  final bool readOnly;
 
   const RatingButtons(
-      {super.key, this.initalRating, required this.onRatingChanged});
+      {super.key,
+      this.initalRating,
+      required this.onRatingChanged,
+      this.readOnly = false});
 
   @override
   State<RatingButtons> createState() => _RatingButtonsState();
@@ -33,7 +37,9 @@ class _RatingButtonsState extends State<RatingButtons> {
             color: Colors.yellow,
           ),
           onPressed: () {
-            onIconPressed(index);
+            if (!widget.readOnly) {
+              onIconPressed(index);
+            }
           },
         );
       }),

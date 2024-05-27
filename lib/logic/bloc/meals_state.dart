@@ -17,12 +17,10 @@ final class LoadingSingleMeal extends MealsState {}
 
 final class SingleMealLoaded extends MealsState {
   final Meal meal;
+  final bool readOnly;
 
-  SingleMealLoaded(this.meal);
+  SingleMealLoaded(this.meal, {this.readOnly = false});
 }
 
-final class MealUpdated extends MealsState {
-  final Meal meal;
+final class UpdatingMeal extends MealsState {}
 
-  MealUpdated(this.meal);
-}

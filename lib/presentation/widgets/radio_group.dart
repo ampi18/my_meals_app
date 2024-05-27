@@ -4,12 +4,14 @@ class RadioGroup<T> extends StatefulWidget {
   final List<T> values;
   final T selectedValue;
   final Function onChanged;
+  final bool readOnly;
 
   const RadioGroup({
     super.key,
     required this.values,
     required this.selectedValue,
     required this.onChanged,
+    this.readOnly = true,
   });
 
   @override
@@ -35,10 +37,12 @@ class _RadioGroupState<T> extends State<RadioGroup<T>> {
             value: value,
             groupValue: selectedValue,
             onChanged: (T? value) {
-              setState(() {
-                selectedValue = value as T;
-              });
-              widget.onChanged(value);
+              if (!widget.readOnly) {
+                setState(() {
+                  selectedValue = value as T;
+                });
+                widget.onChanged(value);
+              }
             },
           ),
         );

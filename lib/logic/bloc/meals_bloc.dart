@@ -22,17 +22,12 @@ class MealsBloc extends Bloc<MealsEvent, MealsState> {
     // on<RequestToPopulateDatabase>((event, emit) async {
     //   await _databaseService.populateData();
     // });
-    on<RequestToLoadSingleMeal>((event, emit) async {
-      emit(LoadingSingleMeal());
-      await _databaseService.meal(event.id).then((meal) {
-        emit(SingleMealLoaded(meal));
-      });
-    });
+    on<RequestToLoadSingleMeal>(_loadSingleMeal);
 
-    on<RequestToUpdateMeal>((event, emit) async {
-      await _databaseService
-          .updateMeal(event.meal)
-          .then((value) => emit(MealUpdated(event.meal)));
+    on<RequestToUpdateMeal>(_updateMeal);
+
+    on<RequestToEditMeal>((event, emit) async {
+      emit(SingleMealLoaded(event.meal, readOnly: false));
     });
   }
 
@@ -53,5 +48,18 @@ class MealsBloc extends Bloc<MealsEvent, MealsState> {
         mealTimes: displayedMealTimes,
         origins: displayedOrigins,
         searchText: searchText);
+  }
+
+  _loadSingleMeal(RequestToLoadSingleMeal event, Emitter<MealsState> emit) async {
+    emit(LoadingSingleMeal());
+    final meal = await _databaseService.meal(event.id);
+    emit(SingleMealLoaded(meal, readOnly: true));
+  }
+
+  _updateMeal(RequestToUpdateMeal event, Emitter<MealsState> emit) async {
+    emit(UpdatingMeal());
+    await _databaseService
+        .updateMeal(event.meal)
+        .then((value) => this.add(RequestToLoadSingleMeal(id: event.meal.id)));
   }
 }

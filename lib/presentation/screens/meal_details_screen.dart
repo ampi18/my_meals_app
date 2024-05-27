@@ -41,6 +41,14 @@ class _MealDetailsState extends State<MealDetails> {
             ),
           ),
           body: const MealForm(),
+          floatingActionButton: state is SingleMealLoaded && state.readOnly
+              ? FloatingActionButton(
+                  onPressed: () {
+                    _mealsBloc.add(RequestToEditMeal(meal: state.meal));
+                  },
+                  child: const Icon(Icons.edit),
+                )
+              : null,
         );
       },
     );

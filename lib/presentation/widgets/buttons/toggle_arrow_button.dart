@@ -1,21 +1,18 @@
 import 'package:flutter/material.dart';
 
 class ToggleArrowButton extends StatefulWidget {
-  const ToggleArrowButton({super.key, required this.sortAction});
+  const ToggleArrowButton(
+      {super.key, required this.sortAction, required this.isAscending});
   final Function sortAction;
+  final bool isAscending;
 
   @override
   State<ToggleArrowButton> createState() => _ToggleArrowButtonState();
 }
 
 class _ToggleArrowButtonState extends State<ToggleArrowButton> {
-  bool _isArrowDown = true;
-
   void _toggleArrow() {
-    setState(() {
-      _isArrowDown = !_isArrowDown;
-      widget.sortAction();
-    });
+    widget.sortAction();
   }
 
   @override
@@ -25,7 +22,7 @@ class _ToggleArrowButtonState extends State<ToggleArrowButton> {
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(_isArrowDown ? Icons.south : Icons.north),
+          Icon(widget.isAscending ? Icons.south : Icons.north),
           const Icon(Icons.date_range),
         ],
       ),

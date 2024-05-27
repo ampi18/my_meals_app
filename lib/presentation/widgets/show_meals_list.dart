@@ -52,6 +52,7 @@ class _ShowMealsListState extends State<ShowMealsList> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       ToggleArrowButton(
+                        isAscending: _mealsBloc.isAscending,
                         sortAction: () {
                           _mealsBloc.add(RequestToLoadMeals(
                             ascending: !_mealsBloc.isAscending,
