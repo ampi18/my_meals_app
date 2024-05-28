@@ -20,10 +20,9 @@ class MealsBloc extends Bloc<MealsEvent, MealsState> {
 
   MealsBloc() : super(MealsInitial()) {
     _databaseService.populateData();
+
     on<RequestToLoadMeals>(_loadMeals);
-    // on<RequestToPopulateDatabase>((event, emit) async {
-    //   await _databaseService.populateData();
-    // });
+
     on<RequestToLoadSingleMeal>(_loadSingleMeal);
 
     on<RequestToUpdateMeal>(_updateMeal);

@@ -7,14 +7,14 @@ part 'settings_state.dart';
 
 class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
   String theme = 'light';
-  String dateFormat = 'dd.mm.yyyy';
+  String dateFormat = 'dd.MM.yyyy';
 
   SettingsBloc() : super(SettingsInitial()) {
     on<RequestToLoadSettings>((event, emit) async {
       emit(LoadingSettings());
       await SharedPreferences.getInstance().then((prefs) {
         theme = prefs.getString('theme') ?? 'light';
-        dateFormat = prefs.getString('dateFormat') ?? 'dd.mm.yyyy';
+        dateFormat = prefs.getString('dateFormat') ?? 'dd.MM.yyyy';
         emit(SettingsLoaded(theme, dateFormat));
       });
 

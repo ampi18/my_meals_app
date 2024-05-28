@@ -1,3 +1,5 @@
+import 'dart:convert';
+import 'package:flutter/services.dart';
 import 'package:my_meals_app/logic/models/meal.dart';
 import 'package:my_meals_app/logic/models/meal_time.dart';
 import 'package:my_meals_app/logic/models/origin.dart';
@@ -35,54 +37,25 @@ class DatabaseService {
   }
 
   Future<void> populateData() async {
-    insertMeal(
-      Meal(
-        id: 1,
-        name: 'Spaghetti',
-        mealTime: MealTime.lunch,
-        rating: 4,
-        origin: Origin.homecooked,
-        source: 'cookidoo/spaghetti',
-        date: DateTime.now(),
-        comment: 'Add more salt next time',
-      ),
-    );
-    insertMeal(
-      Meal(
-        id: 2,
-        name: 'Fried Rice',
-        mealTime: MealTime.dinner,
-        rating: 5,
-        origin: Origin.delivery,
-        source: 'lieferando/myfavchineserestaurant',
-        date: DateTime.parse('2023-03-01'),
-        comment: 'Was totally delicious',
-      ),
-    );
-    insertMeal(
-      Meal(
-        id: 3,
-        name: 'Pancakes',
-        mealTime: MealTime.breakfast,
-        rating: 3,
-        origin: Origin.restaurant,
-        source: 'Some breakfast place in Würzburg',
-        date: DateTime.parse('2022-11-13'),
-        comment: 'Seemed dry, but okay with Nutella',
-      ),
-    );
-    insertMeal(
-      Meal(
-        id: 4,
-        name: 'Cheese Cake',
-        mealTime: MealTime.snack,
-        rating: 5,
-        origin: Origin.other,
-        source: 'at my grandmothers place',
-        date: DateTime.parse('2019-06-12'),
-        comment: 'best you can get',
-      ),
-    );
+    final String response =
+        await rootBundle.loadString('assets/data/initial_meals.json');
+    final List<dynamic> data = json.decode(response);
+
+    for (var item in data) {
+      insertMeal(
+        Meal(
+          id: item['id'],
+          name: item['name'],
+          mealTime:
+              MealTime.values.firstWhere((e) => e.name == item['mealTime']),
+          rating: item['rating'],
+          origin: Origin.values.firstWhere((e) => e.name == item['origin']),
+          source: item['source'],
+          date: DateTime.parse(item['date']),
+          comment: item['comment'],
+        ),
+      );
+    }
   }
 
   Future<int> insertMeal(Meal meal) async {
@@ -107,16 +80,6 @@ class DatabaseService {
     ratings ??= List<int>.generate(5, (index) => index + 1);
     mealTimes ??= List<int>.generate(4, (index) => index);
     origins ??= List<int>.generate(4, (index) => index);
-
-    // final List<Map<String, dynamic>> maps = await db.query(
-    //   'meal',
-    //   orderBy: 'date $sortOrder',
-    //   where:
-    //       'rating IN (${List<String>.filled(ratings.length, '?').join(', ')}) '
-    //       'AND mealTime IN (${List<String>.filled(mealTimes.length, '?').join(', ')}) '
-    //       'AND origin IN (${List<String>.filled(origins.length, '?').join(', ')}) ',
-    //   whereArgs: [...ratings, ...mealTimes, ...origins],
-    // );
 
     List<String> whereClauses = [
       'rating IN (${List<String>.filled(ratings.length, '?').join(', ')})',

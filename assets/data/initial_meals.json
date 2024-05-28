@@ -1,0 +1,43 @@
+[
+    {
+      "id": 1,
+      "name": "Spaghetti",
+      "mealTime": "lunch",
+      "rating": 4,
+      "origin": "homecooked",
+      "source": "cookidoo/spaghetti",
+      "date": "2023-05-27T00:00:00.000", 
+      "comment": "Add more salt next time"
+    },
+    {
+      "id": 2,
+      "name": "Fried Rice",
+      "mealTime": "dinner",
+      "rating": 5,
+      "origin": "delivery",
+      "source": "lieferando/myfavchineserestaurant",
+      "date": "2023-03-01T00:00:00.000",
+      "comment": "Was totally delicious"
+    },
+    {
+      "id": 3,
+      "name": "Pancakes",
+      "mealTime": "breakfast",
+      "rating": 3,
+      "origin": "restaurant",
+      "source": "Some breakfast place in Würzburg",
+      "date": "2022-11-13T00:00:00.000",
+      "comment": "Seemed dry, but okay with Nutella"
+    },
+    {
+      "id": 4,
+      "name": "Cheese Cake",
+      "mealTime": "snack",
+      "rating": 5,
+      "origin": "other",
+      "source": "at my grandmothers place",
+      "date": "2019-06-12T00:00:00.000",
+      "comment": "best you can get"
+    }
+  ]
+  

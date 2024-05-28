@@ -3,8 +3,6 @@ part of 'meals_bloc.dart';
 @immutable
 sealed class MealsEvent {}
 
-final class RequestToPopulateDatabase extends MealsEvent {}
-
 final class RequestToLoadMeals extends MealsEvent {
   final bool ascending;
   final List<int>? ratings;

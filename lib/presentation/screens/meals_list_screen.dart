@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_meals_app/logic/bloc/meals/meals_bloc.dart';
+import 'package:my_meals_app/presentation/screens/info_screen.dart';
 import 'package:my_meals_app/presentation/screens/meal_details_screen.dart';
 import 'package:my_meals_app/presentation/screens/settings_screen.dart';
 import 'package:my_meals_app/presentation/widgets/show_meals_list.dart';
@@ -49,13 +49,16 @@ class MealsListScreen extends StatelessWidget {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => const Settings()));
+                              builder: (context) => const SettingsScreen()));
                     },
                   ),
                   ListTile(
                     title: const Text('Info'),
                     onTap: () {
-                      Navigator.pop(context);
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const InfoScreen()));
                     },
                   ),
                 ],

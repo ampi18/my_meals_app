@@ -10,7 +10,7 @@ class DateFormatToggleButton extends StatefulWidget {
 }
 
 class _DateFormatToggleButtonState extends State<DateFormatToggleButton> {
-  final List<String> formats = ['dd.mm.yyyy', 'mm/dd/yyyy', 'yyyy-mm-dd'];
+  final List<String> formats = ['dd.MM.yyyy', 'MM/dd/yyyy', 'yyyy-MM-dd'];
 
   late SettingsBloc _settingsBloc;
 
