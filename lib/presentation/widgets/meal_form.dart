@@ -46,12 +46,19 @@ class MealFormState extends State<MealForm> {
                           readOnly: state.readOnly,
                           initialValue: state.meal.name,
                           onChanged: (value) => state.meal.name = value,
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please enter a name';
+                            }
+                            return null;
+                          },
                           decoration: const InputDecoration(
                               labelText: 'Name', filled: true),
                         ),
                         const SizedBox(height: 16),
                         DateBox(
                           readOnly: state.readOnly,
+                          inititalDate: state.meal.date,
                           onDateChanged: (date) {
                             state.meal.date = date;
                           },
@@ -85,6 +92,12 @@ class MealFormState extends State<MealForm> {
                           onChanged: (value) => state.meal.source = value,
                           decoration: const InputDecoration(
                               labelText: 'Source', filled: true),
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please enter a source';
+                            }
+                            return null;
+                          },
                         ),
                         const SizedBox(height: 16),
                         TextFormField(
@@ -108,17 +121,19 @@ class MealFormState extends State<MealForm> {
                               ),
                               ElevatedButton(
                                 onPressed: () {
-                                  _mealsBloc.add(RequestToUpdateMeal(
-                                      meal: Meal(
-                                    id: state.meal.id,
-                                    name: state.meal.name,
-                                    date: state.meal.date,
-                                    rating: state.meal.rating,
-                                    mealTime: state.meal.mealTime,
-                                    origin: state.meal.origin,
-                                    source: state.meal.source,
-                                    comment: state.meal.comment,
-                                  )));
+                                  if (_formKey.currentState!.validate()) {
+                                    _mealsBloc.add(RequestToUpdateMeal(
+                                        meal: Meal(
+                                      id: state.meal.id,
+                                      name: state.meal.name,
+                                      date: state.meal.date,
+                                      rating: state.meal.rating,
+                                      mealTime: state.meal.mealTime,
+                                      origin: state.meal.origin,
+                                      source: state.meal.source,
+                                      comment: state.meal.comment,
+                                    )));
+                                  }
                                 },
                                 child: const Text('Save'),
                               ),

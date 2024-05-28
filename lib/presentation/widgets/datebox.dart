@@ -4,9 +4,14 @@ import 'package:intl/intl.dart';
 import 'package:my_meals_app/logic/bloc/settings/settings_bloc.dart';
 
 class DateBox extends StatefulWidget {
-  const DateBox({super.key, required this.onDateChanged, this.readOnly = true});
+  const DateBox(
+      {super.key,
+      required this.onDateChanged,
+      this.readOnly = true,
+      required this.inititalDate});
   final Function(DateTime) onDateChanged;
   final bool readOnly;
+  final DateTime inititalDate;
 
   @override
   State<DateBox> createState() => _DateBoxState();
@@ -14,17 +19,18 @@ class DateBox extends StatefulWidget {
 
 class _DateBoxState extends State<DateBox> {
   final TextEditingController textEditingController = TextEditingController();
-  DateTime _selectedDate = DateTime.now();
+  late DateTime _selectedDate;
   late SettingsBloc _settingsBloc;
 
   @override
   void initState() {
+    _selectedDate = widget.inititalDate;
     _settingsBloc = BlocProvider.of<SettingsBloc>(context);
     textEditingController.text = DateFormat(
             _settingsBloc.state is SettingsLoaded
                 ? (_settingsBloc.state as SettingsLoaded).dateFormat
                 : 'dd.MM.yyyy')
-        .format(DateTime.now());
+        .format(_selectedDate);
     super.initState();
   }
 
@@ -66,7 +72,7 @@ class _DateBoxState extends State<DateBox> {
           controller: textEditingController,
           keyboardType: TextInputType.none,
           decoration: InputDecoration(
-            label: const Text('Date'),
+            label: const Text('last meal date'),
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(10),
             ),
