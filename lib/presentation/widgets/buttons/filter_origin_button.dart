@@ -1,16 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:my_meals_app/logic/bloc/meals/meals_bloc.dart';
 import 'package:my_meals_app/logic/models/origin.dart';
 
 class FilterOriginButton extends StatefulWidget {
-  const FilterOriginButton({super.key, required this.onSelectionChanged});
-  final Function onSelectionChanged;
+  const FilterOriginButton({super.key});
 
   @override
   State<FilterOriginButton> createState() => _FilterOriginButtonState();
 }
 
 class _FilterOriginButtonState extends State<FilterOriginButton> {
-  List<bool> selectedOrigins = List<bool>.filled(4, true);
+  late MealsBloc _mealsBloc;
+
+  @override
+  void initState() {
+    super.initState();
+    _mealsBloc = BlocProvider.of<MealsBloc>(context);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -37,26 +44,30 @@ class _FilterOriginButtonState extends State<FilterOriginButton> {
               List<PopupMenuEntry<int>>.generate(4, (index) {
             return PopupMenuItem<int>(
               value: index,
-              child: StatefulBuilder(
-                builder: (BuildContext context, StateSetter setState) {
+              child: BlocBuilder(
+                bloc: _mealsBloc,
+                builder: (context, state) {
                   return CheckboxListTile(
-                    value: selectedOrigins[index],
+                    value: state is MealsLoaded
+                        ? state.displayedOrigins.contains(index)
+                        : false,
                     onChanged: (bool? value) {
                       if (value == false &&
-                          selectedOrigins.where((element) => element).length ==
-                              1) {
+                          state is MealsLoaded &&
+                          state.displayedOrigins.length == 1) {
                         // Prevent unchecking the last checked checkbox
                         return;
                       }
-                      setState(() {
-                        selectedOrigins[index] = value!;
-                        widget.onSelectionChanged(selectedOrigins
-                            .asMap()
-                            .entries
-                            .where((entry) => entry.value)
-                            .map((entry) => entry.key)
-                            .toList());
-                      });
+                      List<int> updatedOrigins =
+                          List.from((state as MealsLoaded).displayedOrigins);
+                      if (value == true) {
+                        updatedOrigins.add(index);
+                      } else {
+                        updatedOrigins.remove(index);
+                      }
+                      _mealsBloc.add(RequestToLoadMeals(
+                        origins: updatedOrigins,
+                      ));
                     },
                     title: Text(Origin.values[index].toString()),
                   );

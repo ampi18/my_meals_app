@@ -1,16 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:my_meals_app/logic/bloc/meals/meals_bloc.dart';
 import 'package:my_meals_app/logic/models/meal_time.dart';
 
 class FilterMealtimeButton extends StatefulWidget {
-  const FilterMealtimeButton({super.key, required this.onSelectionChanged});
-  final Function onSelectionChanged;
+  const FilterMealtimeButton({super.key});
 
   @override
   State<FilterMealtimeButton> createState() => _FilterMealtimeButtonState();
 }
 
 class _FilterMealtimeButtonState extends State<FilterMealtimeButton> {
-  List<bool> selectedMealtimes = List<bool>.filled(4, true);
+  late MealsBloc _mealsBloc;
+
+  @override
+  void initState() {
+    super.initState();
+    _mealsBloc = BlocProvider.of<MealsBloc>(context);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -38,28 +45,30 @@ class _FilterMealtimeButtonState extends State<FilterMealtimeButton> {
               List<PopupMenuEntry<int>>.generate(4, (index) {
             return PopupMenuItem<int>(
               value: index,
-              child: StatefulBuilder(
-                builder: (BuildContext context, StateSetter setState) {
+              child: BlocBuilder(
+                bloc: _mealsBloc,
+                builder: (context, state) {
                   return CheckboxListTile(
-                    value: selectedMealtimes[index],
+                    value: state is MealsLoaded
+                        ? state.displayedMealTimes.contains(index)
+                        : false,
                     onChanged: (bool? value) {
                       if (value == false &&
-                          selectedMealtimes
-                                  .where((element) => element)
-                                  .length ==
-                              1) {
+                          state is MealsLoaded &&
+                          state.displayedMealTimes.length == 1) {
                         // Prevent unchecking the last checked checkbox
                         return;
                       }
-                      setState(() {
-                        selectedMealtimes[index] = value!;
-                        widget.onSelectionChanged(selectedMealtimes
-                            .asMap()
-                            .entries
-                            .where((entry) => entry.value)
-                            .map((entry) => entry.key)
-                            .toList());
-                      });
+                      List<int> updatedMealtimes =
+                          List.from((state as MealsLoaded).displayedMealTimes);
+                      if (value == true) {
+                        updatedMealtimes.add(index);
+                      } else {
+                        updatedMealtimes.remove(index);
+                      }
+                      _mealsBloc.add(RequestToLoadMeals(
+                        mealTimes: updatedMealtimes,
+                      ));
                     },
                     title: Text(MealTime.values[index].toString()),
                   );

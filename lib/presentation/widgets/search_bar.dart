@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:my_meals_app/logic/bloc/meals/meals_bloc.dart';
 
 class ListSearchBar extends StatefulWidget {
-  final Function onInputChanged;
-  const ListSearchBar({super.key, required this.onInputChanged});
+  const ListSearchBar({super.key});
 
   @override
   State<ListSearchBar> createState() => _ListSearchBarState();
@@ -10,11 +11,12 @@ class ListSearchBar extends StatefulWidget {
 
 class _ListSearchBarState extends State<ListSearchBar> {
   final TextEditingController _textEditingController = TextEditingController();
+  late MealsBloc _mealsBloc;
 
-  String get _searchText => _textEditingController.text;
-
-  void _clearTextField() {
-    _textEditingController.clear();
+  @override
+  void initState() {
+    super.initState();
+    _mealsBloc = BlocProvider.of<MealsBloc>(context);
   }
 
   @override
@@ -29,7 +31,11 @@ class _ListSearchBarState extends State<ListSearchBar> {
       children: [
         TextField(
           controller: _textEditingController,
-          onChanged: (_) => widget.onInputChanged(_searchText),
+          onChanged: (String searchText) {
+            _mealsBloc.add(RequestToLoadMeals(
+              searchText: searchText,
+            ));
+          },
           decoration: InputDecoration(
             labelText: 'Search by name',
             prefixIcon: const Icon(Icons.search),
@@ -38,14 +44,6 @@ class _ListSearchBarState extends State<ListSearchBar> {
             ),
           ),
         ),
-        if (_textEditingController.text.isNotEmpty)
-          Align(
-            alignment: Alignment.centerRight,
-            child: IconButton(
-              icon: const Icon(Icons.clear),
-              onPressed: _clearTextField,
-            ),
-          ),
       ],
     );
   }

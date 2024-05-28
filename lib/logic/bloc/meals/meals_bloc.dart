@@ -16,7 +16,7 @@ class MealsBloc extends Bloc<MealsEvent, MealsState> {
   List<int> displayedRatings = List<int>.generate(5, (index) => index + 1);
   List<int> displayedMealTimes = List<int>.generate(4, (index) => index);
   List<int> displayedOrigins = List<int>.generate(4, (index) => index);
-  String searchText = '';
+  String? searchText;
 
   MealsBloc() : super(MealsInitial()) {
     _databaseService.populateData();
@@ -52,8 +52,15 @@ class MealsBloc extends Bloc<MealsEvent, MealsState> {
     displayedRatings = event.ratings ?? displayedRatings;
     displayedMealTimes = event.mealTimes ?? displayedMealTimes;
     displayedOrigins = event.origins ?? displayedOrigins;
-    searchText = event.searchText;
-    await loadMealsFromDB().then((meals) => emit(MealsLoaded(meals)));
+    searchText = event.searchText ?? searchText;
+
+    await loadMealsFromDB().then((meals) => emit(MealsLoaded(
+        meals: meals,
+        isAscending: isAscending,
+        displayedRatings: displayedRatings,
+        displayedMealTimes: displayedMealTimes,
+        displayedOrigins: displayedOrigins,
+        searchText: searchText)));
   }
 
   Future<List<Meal>> loadMealsFromDB() async {

@@ -1,15 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:my_meals_app/logic/bloc/meals/meals_bloc.dart';
 
 class FilterRatingButton extends StatefulWidget {
-  const FilterRatingButton({super.key, required this.onSelectionChanged});
-  final Function onSelectionChanged;
+  const FilterRatingButton({super.key});
 
   @override
   State<FilterRatingButton> createState() => _FilterRatingButtonState();
 }
 
 class _FilterRatingButtonState extends State<FilterRatingButton> {
-  List<bool> selectedRatings = List<bool>.filled(5, true);
+  late MealsBloc _mealsBloc;
+
+  @override
+  void initState() {
+    super.initState();
+    _mealsBloc = BlocProvider.of<MealsBloc>(context);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -35,26 +42,30 @@ class _FilterRatingButtonState extends State<FilterRatingButton> {
             List<PopupMenuEntry<int>>.generate(5, (index) {
           return PopupMenuItem<int>(
             value: index + 1,
-            child: StatefulBuilder(
-              builder: (BuildContext context, StateSetter setState) {
+            child: BlocBuilder(
+              bloc: _mealsBloc,
+              builder: (context, state) {
                 return CheckboxListTile(
-                  value: selectedRatings[index],
+                  value: state is MealsLoaded
+                      ? state.displayedRatings.contains(index + 1)
+                      : false,
                   onChanged: (bool? value) {
                     if (value == false &&
-                        selectedRatings.where((element) => element).length ==
-                            1) {
+                        state is MealsLoaded &&
+                        state.displayedRatings.length == 1) {
                       // Prevent unchecking the last checked checkbox
                       return;
                     }
-                    setState(() {
-                      selectedRatings[index] = value!;
-                      widget.onSelectionChanged(selectedRatings
-                          .asMap()
-                          .entries
-                          .where((entry) => entry.value)
-                          .map((entry) => entry.key + 1)
-                          .toList());
-                    });
+                    List<int> updatedRatings =
+                        List.from((state as MealsLoaded).displayedRatings);
+                    if (value == true) {
+                      updatedRatings.add(index + 1);
+                    } else {
+                      updatedRatings.remove(index + 1);
+                    }
+                    _mealsBloc.add(RequestToLoadMeals(
+                      ratings: updatedRatings,
+                    ));
                   },
                   title: Row(
                     children: List<Widget>.generate(

@@ -23,70 +23,40 @@ class _ShowMealsListState extends State<ShowMealsList> {
   void initState() {
     super.initState();
     _mealsBloc = BlocProvider.of<MealsBloc>(context);
-    //request to populate database?
     _mealsBloc.add(RequestToLoadMeals());
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<MealsBloc, MealsState>(
-      bloc: _mealsBloc,
-      builder: (context, state) {
-        return switch (state) {
-          LoadingMeals() => const Center(child: CircularProgressIndicator()),
-          MealsLoaded() => Column(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: ListSearchBar(
-                    onInputChanged: (String searchText) {
-                      _mealsBloc.add(RequestToLoadMeals(
-                        searchText: searchText,
-                      ));
-                    },
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      ToggleArrowButton(
-                        isAscending: _mealsBloc.isAscending,
-                        sortAction: () {
-                          _mealsBloc.add(RequestToLoadMeals(
-                            ascending: !_mealsBloc.isAscending,
-                          ));
-                        },
-                      ),
-                      Row(
-                        children: [
-                          FilterRatingButton(
-                            onSelectionChanged: (List<int> selectedRatings) {
-                              _mealsBloc.add(RequestToLoadMeals(
-                                ratings: selectedRatings,
-                              ));
-                            },
-                          ),
-                          FilterMealtimeButton(
-                            onSelectionChanged: (List<int> selectedMealTimes) {
-                              _mealsBloc.add(RequestToLoadMeals(
-                                mealTimes: selectedMealTimes,
-                              ));
-                            },
-                          ),
-                          FilterOriginButton(
-                              onSelectionChanged: (List<int> selectedOrigins) {
-                            _mealsBloc.add(RequestToLoadMeals(
-                              origins: selectedOrigins,
-                            ));
-                          }),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-                state.meals.isNotEmpty
+    return Column(
+      children: [
+        const Padding(
+          padding: EdgeInsets.all(8.0),
+          child: ListSearchBar(),
+        ),
+        const Padding(
+          padding: EdgeInsets.all(8.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              ToggleArrowButton(),
+              Row(
+                children: [
+                  FilterRatingButton(),
+                  FilterMealtimeButton(),
+                  FilterOriginButton(),
+                ],
+              ),
+            ],
+          ),
+        ),
+        BlocBuilder<MealsBloc, MealsState>(
+            bloc: _mealsBloc,
+            builder: (context, state) {
+              return switch (state) {
+                LoadingMeals() =>
+                  const Center(child: CircularProgressIndicator()),
+                MealsLoaded() => state.meals.isNotEmpty
                     ? Expanded(
                         child: ListView.builder(
                           itemCount: state.meals.length,
@@ -119,12 +89,11 @@ class _ShowMealsListState extends State<ShowMealsList> {
                                     TextStyle(fontSize: 16, color: Colors.red),
                               ),
                             ]),
-                      )
-              ],
-            ),
-          _ => Container(),
-        };
-      },
+                      ),
+                _ => Container()
+              };
+            }),
+      ],
     );
   }
 }

@@ -8,14 +8,14 @@ final class RequestToLoadMeals extends MealsEvent {
   final List<int>? ratings;
   final List<int>? mealTimes;
   final List<int>? origins;
-  final String searchText;
+  final String? searchText;
 
   RequestToLoadMeals(
       {this.ascending = true,
       this.ratings,
       this.mealTimes,
       this.origins,
-      this.searchText = ''});
+      this.searchText});
 }
 
 final class RequestToLoadSingleMeal extends MealsEvent {

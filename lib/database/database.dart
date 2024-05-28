@@ -72,7 +72,7 @@ class DatabaseService {
     List<int>? ratings,
     List<int>? mealTimes,
     List<int>? origins,
-    String searchText = '',
+    String? searchText,
   }) async {
     final db = await _databaseService.database;
 
@@ -89,7 +89,7 @@ class DatabaseService {
 
     List<dynamic> whereArgs = [...ratings, ...mealTimes, ...origins];
 
-    if (searchText.isNotEmpty) {
+    if (searchText != null && searchText.isNotEmpty) {
       whereClauses.add('name LIKE ?');
       whereArgs.add('%$searchText%');
     }
