@@ -18,9 +18,9 @@ class MealsBloc extends Bloc<MealsEvent, MealsState> {
   List<int> displayedOrigins = List<int>.generate(4, (index) => index);
   String? searchText;
 
-  MealsBloc() : super(MealsInitial()) {
-    _databaseService.populateData();
+  bool isFirstRquest = true;
 
+  MealsBloc() : super(MealsInitial()) {
     on<RequestToLoadMeals>(_loadMeals);
 
     on<RequestToLoadSingleMeal>(_loadSingleMeal);
@@ -48,6 +48,12 @@ class MealsBloc extends Bloc<MealsEvent, MealsState> {
 
   _loadMeals(RequestToLoadMeals event, Emitter<MealsState> emit) async {
     emit(LoadingMeals());
+
+    if (isFirstRquest) {
+      await _databaseService.populateData();
+      isFirstRquest = false;
+    }
+
     isAscending = event.ascending;
     displayedRatings = event.ratings ?? displayedRatings;
     displayedMealTimes = event.mealTimes ?? displayedMealTimes;

@@ -10,7 +10,7 @@ class ThemeToggleButton extends StatefulWidget {
 }
 
 class _ThemeToggleButtonState extends State<ThemeToggleButton> {
-  final List<String> themes = ['Light', 'Dark'];
+  final List<String> themes = ['light', 'dark'];
   late SettingsBloc _settingsBloc;
 
   @override

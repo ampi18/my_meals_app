@@ -29,12 +29,14 @@ class MyApp extends StatelessWidget {
       builder: (context, state) {
         return MaterialApp(
           title: 'My Meals',
-          home: const MealsListScreen(),
+          home: state is SettingsLoaded
+              ? const MealsListScreen()
+              : const CircularProgressIndicator(),
           theme: ThemeData(
             useMaterial3: true,
             colorScheme: ColorScheme.fromSeed(
               seedColor: Colors.purple,
-              brightness: state is SettingsLoaded && state.theme == 'Dark'
+              brightness: state is SettingsLoaded && state.theme == 'dark'
                   ? Brightness.dark
                   : Brightness.light,
             ),

@@ -14,28 +14,30 @@ class SettingsScreen extends StatelessWidget {
       ),
       body: Container(
         padding: const EdgeInsets.all(16),
-        child: Row(
-          children: [
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Container(
-                    height: 48,
-                    alignment: Alignment.center,
-                    child: const Text('Theme:')),
-                Container(
-                    height: 48,
-                    alignment: Alignment.center,
-                    child: const Text('Date Format:')),
-              ],
+        child: ListView(
+          children: const [
+            ListTile(
+              title: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text('Theme'),
+                  SizedBox(height: 8),
+                  ThemeToggleButton(),
+                ],
+              ),
+              contentPadding: EdgeInsets.zero,
             ),
-            const SizedBox(width: 16),
-            const Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                ThemeToggleButton(),
-                DateFormatToggleButton(),
-              ],
+            Divider(),
+            ListTile(
+              title: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text('Date Format'),
+                  SizedBox(height: 8),
+                  DateFormatToggleButton(),
+                ],
+              ),
+              contentPadding: EdgeInsets.zero,
             ),
           ],
         ),

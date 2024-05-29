@@ -36,8 +36,8 @@ class _DateFormatToggleButtonState extends State<DateFormatToggleButton> {
               constraints: const BoxConstraints(
                 minHeight: 32.0,
                 maxHeight: 32.0,
-                minWidth: 90.0,
-                maxWidth: 90.0,
+                minWidth: 100.0,
+                maxWidth: 100.0,
               ),
               children: formats
                   .map((format) => Padding(
