@@ -38,6 +38,64 @@
       "source": "at my grandmothers place",
       "date": "2019-06-12T00:00:00.000",
       "comment": "best you can get"
+    },
+    {
+      "id": 5,
+      "name": "Strawberry Cheese Cake",
+      "mealTime": "snack",
+      "rating": 5,
+      "origin": "other",
+      "source": "mom's birthday",
+      "date": "2024-05-10T00:00:00.000",
+      "comment": "really good"
+    },    {
+      "id": 6,
+      "name": "Lasagna",
+      "mealTime": "dinner",
+      "rating": 4,
+      "origin": "homecooked",
+      "source": "instagram/somefoodaccount",
+      "date": "2020-07-13T00:00:00.000",
+      "comment": "add more cheese"
+    },
+    {
+      "id": 7,
+      "name": "Falafel Wrap",
+      "mealTime": "lunch",
+      "rating": 3,
+      "origin": "delivery",
+      "source": "lieferando/veggieplacexyz",
+      "date": "2022-02-24T00:00:00.000",
+      "comment": "a bit dry"
+    },
+    {
+      "id": 8,
+      "name": "Breakfast for two",
+      "mealTime": "breakfast",
+      "rating": 4,
+      "origin": "restaurant",
+      "source": "bakery next to my house",
+      "date": "2024-04-02T00:00:00.000",
+      "comment": "a lot to choose from, don't take an additional cake next time, it was too much."
+    },
+    {
+      "id": 9,
+      "name": "Veggie Burger",
+      "mealTime": "dinner",
+      "rating": 5,
+      "origin": "homecooked",
+      "source": "youtube/fancyburgers",
+      "date": "2024-03-22T00:00:00.000",
+      "comment": "absolutetly delicious"
+    },    {
+      "id": 10,
+      "name": "Tomato Soup",
+      "mealTime": "dinner",
+      "rating": 4,
+      "origin": "homecooked",
+      "source": "mom's recipe",
+      "date": "2024-02-07T00:00:00.000",
+      "comment": "very creamy, don't forget to buy bread to serve with!"
     }
   ]
   
