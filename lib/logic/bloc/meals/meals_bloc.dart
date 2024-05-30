@@ -27,23 +27,9 @@ class MealsBloc extends Bloc<MealsEvent, MealsState> {
 
     on<RequestToUpdateMeal>(_updateMeal);
 
-    on<RequestToEditMeal>((event, emit) async {
-      emit(SingleMealLoaded(event.meal, readOnly: false));
-    });
+    on<RequestToEditMeal>(_editMeal);
 
-    on<RequestToAddMeal>((event, emit) async {
-      emit(SingleMealLoaded(
-          Meal(
-            id: 0,
-            name: '',
-            rating: 1,
-            mealTime: MealTime.breakfast,
-            origin: Origin.homecooked,
-            source: '',
-            date: DateTime.now(),
-          ),
-          readOnly: false));
-    });
+    on<RequestToAddMeal>(_addMeal);
   }
 
   _loadMeals(RequestToLoadMeals event, Emitter<MealsState> emit) async {
@@ -69,6 +55,42 @@ class MealsBloc extends Bloc<MealsEvent, MealsState> {
         searchText: searchText)));
   }
 
+  _loadSingleMeal(
+      RequestToLoadSingleMeal event, Emitter<MealsState> emit) async {
+    emit(LoadingSingleMeal());
+    await loadSingleMealFromDB(event.id)
+        .then((meal) => emit(SingleMealLoaded(meal, readOnly: true)));
+  }
+
+  _updateMeal(RequestToUpdateMeal event, Emitter<MealsState> emit) async {
+    emit(UpdatingMeal());
+    if (event.meal.id == 0) {
+      await insertMealInDB(event.meal)
+          .then((value) => add(RequestToLoadSingleMeal(id: value)));
+    } else {
+      await updateMealInDB(event.meal)
+          .then((value) => add(RequestToLoadSingleMeal(id: event.meal.id)));
+    }
+  }
+
+  _editMeal(RequestToEditMeal event, Emitter<MealsState> emit) {
+    emit(SingleMealLoaded(event.meal, readOnly: false));
+  }
+
+  _addMeal(RequestToAddMeal event, Emitter<MealsState> emit) {
+    emit(SingleMealLoaded(
+        Meal(
+          id: 0,
+          name: '',
+          rating: 1,
+          mealTime: MealTime.breakfast,
+          origin: Origin.homecooked,
+          source: '',
+          date: DateTime.now(),
+        ),
+        readOnly: false));
+  }
+
   Future<List<Meal>> loadMealsFromDB() async {
     return await _databaseService.meals(
         ascending: isAscending,
@@ -78,23 +100,15 @@ class MealsBloc extends Bloc<MealsEvent, MealsState> {
         searchText: searchText);
   }
 
-  _loadSingleMeal(
-      RequestToLoadSingleMeal event, Emitter<MealsState> emit) async {
-    emit(LoadingSingleMeal());
-    final meal = await _databaseService.meal(event.id);
-    emit(SingleMealLoaded(meal, readOnly: true));
+  Future<Meal> loadSingleMealFromDB(int id) async {
+    return await _databaseService.meal(id);
   }
 
-  _updateMeal(RequestToUpdateMeal event, Emitter<MealsState> emit) async {
-    emit(UpdatingMeal());
-    if (event.meal.id == 0) {
-      await _databaseService
-          .insertMeal(event.meal)
-          .then((value) => add(RequestToLoadSingleMeal(id: value)));
-    } else {
-      await _databaseService
-          .updateMeal(event.meal)
-          .then((value) => add(RequestToLoadSingleMeal(id: event.meal.id)));
-    }
+  Future<int> insertMealInDB(Meal meal) async {
+    return await _databaseService.insertMeal(meal);
+  }
+
+  Future<void> updateMealInDB(Meal meal) async {
+    return await _databaseService.updateMeal(meal);
   }
 }
