@@ -39,7 +39,8 @@ class MealListTile extends StatelessWidget {
                   child: Icon(meal.origin.icon),
                 ),
                 const SizedBox(width: 10),
-                Align(
+                Container(
+                  width: 150,
                   alignment: Alignment.centerLeft,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -49,6 +50,8 @@ class MealListTile extends StatelessWidget {
                         meal.name,
                         style: const TextStyle(
                             fontSize: 20, fontWeight: FontWeight.bold),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
                       ),
                       Text(meal.mealTime.name),
                     ],
