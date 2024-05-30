@@ -26,29 +26,34 @@ class _MealDetailsState extends State<MealDetails> {
     return BlocBuilder<MealsBloc, MealsState>(
       bloc: _mealsBloc,
       builder: (context, state) {
-        return Scaffold(
-          appBar: AppBar(
-            title: state is SingleMealLoaded
-                ? Text(state.meal.name)
-                : const Text('Meal Details'),
-            centerTitle: true,
-            leading: IconButton(
-              icon: const Icon(Icons.arrow_back),
-              onPressed: () {
-                _mealsBloc.add(RequestToLoadMeals());
-                Navigator.pop(context);
-              },
+        return PopScope(
+          onPopInvoked: (didPop) {
+            _mealsBloc.add(RequestToLoadMeals());
+          },
+          child: Scaffold(
+            appBar: AppBar(
+              title: state is SingleMealLoaded
+                  ? Text(state.meal.name)
+                  : const Text('Meal Details'),
+              centerTitle: true,
+              leading: IconButton(
+                icon: const Icon(Icons.arrow_back),
+                onPressed: () {
+                  _mealsBloc.add(RequestToLoadMeals());
+                  Navigator.pop(context);
+                },
+              ),
             ),
+            body: const MealForm(),
+            floatingActionButton: state is SingleMealLoaded && state.readOnly
+                ? FloatingActionButton(
+                    onPressed: () {
+                      _mealsBloc.add(RequestToEditMeal(meal: state.meal));
+                    },
+                    child: const Icon(Icons.edit),
+                  )
+                : null,
           ),
-          body: const MealForm(),
-          floatingActionButton: state is SingleMealLoaded && state.readOnly
-              ? FloatingActionButton(
-                  onPressed: () {
-                    _mealsBloc.add(RequestToEditMeal(meal: state.meal));
-                  },
-                  child: const Icon(Icons.edit),
-                )
-              : null,
         );
       },
     );

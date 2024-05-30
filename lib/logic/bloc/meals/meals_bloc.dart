@@ -36,7 +36,7 @@ class MealsBloc extends Bloc<MealsEvent, MealsState> {
           Meal(
             id: 0,
             name: '',
-            rating: 0,
+            rating: 1,
             mealTime: MealTime.breakfast,
             origin: Origin.homecooked,
             source: '',
@@ -54,7 +54,7 @@ class MealsBloc extends Bloc<MealsEvent, MealsState> {
       isFirstRquest = false;
     }
 
-    isAscending = event.ascending;
+    isAscending = event.ascending ?? isAscending;
     displayedRatings = event.ratings ?? displayedRatings;
     displayedMealTimes = event.mealTimes ?? displayedMealTimes;
     displayedOrigins = event.origins ?? displayedOrigins;

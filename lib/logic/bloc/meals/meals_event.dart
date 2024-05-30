@@ -4,14 +4,14 @@ part of 'meals_bloc.dart';
 sealed class MealsEvent {}
 
 final class RequestToLoadMeals extends MealsEvent {
-  final bool ascending;
+  final bool? ascending;
   final List<int>? ratings;
   final List<int>? mealTimes;
   final List<int>? origins;
   final String? searchText;
 
   RequestToLoadMeals(
-      {this.ascending = true,
+      {this.ascending,
       this.ratings,
       this.mealTimes,
       this.origins,

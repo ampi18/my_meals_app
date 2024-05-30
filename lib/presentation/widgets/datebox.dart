@@ -45,7 +45,7 @@ class _DateBoxState extends State<DateBox> {
       context: context,
       initialDate: _selectedDate,
       firstDate: DateTime(2000),
-      lastDate: DateTime(2101),
+      lastDate: DateTime(2100),
     );
 
     if (pickedDate != null && pickedDate != _selectedDate) {
@@ -71,12 +71,8 @@ class _DateBoxState extends State<DateBox> {
           readOnly: widget.readOnly,
           controller: textEditingController,
           keyboardType: TextInputType.none,
-          decoration: InputDecoration(
-            label: const Text('last meal date'),
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(10),
-            ),
-          ),
+          decoration: const InputDecoration(
+              label: Text('Last meal date'), filled: true),
           onTap: () {
             if (!widget.readOnly) {
               _selectDate(context);
