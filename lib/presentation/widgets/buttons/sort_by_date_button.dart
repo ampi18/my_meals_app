@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_meals_app/logic/bloc/meals/meals_bloc.dart';
 
-class ToggleArrowButton extends StatefulWidget {
-  const ToggleArrowButton({super.key});
+class SortByDateButton extends StatefulWidget {
+  const SortByDateButton({super.key});
 
   @override
-  State<ToggleArrowButton> createState() => _ToggleArrowButtonState();
+  State<SortByDateButton> createState() => _SortByDateButtonState();
 }
 
-class _ToggleArrowButtonState extends State<ToggleArrowButton> {
+class _SortByDateButtonState extends State<SortByDateButton> {
   late MealsBloc _mealsBloc;
 
   @override

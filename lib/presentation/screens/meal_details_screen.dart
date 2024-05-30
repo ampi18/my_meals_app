@@ -36,13 +36,6 @@ class _MealDetailsState extends State<MealDetails> {
                   ? Text(state.meal.name)
                   : const Text('Meal Details'),
               centerTitle: true,
-              leading: IconButton(
-                icon: const Icon(Icons.arrow_back),
-                onPressed: () {
-                  _mealsBloc.add(RequestToLoadMeals());
-                  Navigator.pop(context);
-                },
-              ),
             ),
             body: const MealForm(),
             floatingActionButton: state is SingleMealLoaded && state.readOnly

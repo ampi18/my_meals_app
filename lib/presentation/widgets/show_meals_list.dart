@@ -5,9 +5,9 @@ import 'package:my_meals_app/presentation/widgets/buttons/filter_mealtime_button
 import 'package:my_meals_app/presentation/widgets/buttons/filter_origin_button.dart';
 import 'package:my_meals_app/presentation/widgets/buttons/filter_rating_button.dart';
 import 'package:my_meals_app/presentation/widgets/meal_list_tile.dart';
-import 'package:my_meals_app/presentation/widgets/buttons/toggle_arrow_button.dart';
+import 'package:my_meals_app/presentation/widgets/buttons/sort_by_date_button.dart';
 import 'package:my_meals_app/presentation/screens/meal_details_screen.dart';
-import 'package:my_meals_app/presentation/widgets/search_bar.dart';
+import 'package:my_meals_app/presentation/widgets/list_search_bar.dart';
 
 class ShowMealsList extends StatefulWidget {
   const ShowMealsList({super.key});
@@ -39,7 +39,7 @@ class _ShowMealsListState extends State<ShowMealsList> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              ToggleArrowButton(),
+              SortByDateButton(),
               Row(
                 children: [
                   FilterRatingButton(),
